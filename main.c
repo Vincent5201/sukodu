@@ -41,7 +41,7 @@ bool solve(int grid_p[9][9],int l) {
         return false;
     }
     int n = 2;
-    while (n < 3)
+    while (n < 4)
     {
         for(int i=0;i<9;i++){
             for(int j=0;j<9;j++){
@@ -50,11 +50,12 @@ bool solve(int grid_p[9][9],int l) {
                     for(int k=1;k<=n;k++){
                         int tmp[9][9];
                         copy(grid_p,tmp);
-                        tmp[i][j] = choose_one(choices,k);
-                        if(solve(tmp,l+1)){
-                            copy(tmp,grid_p);
+                        grid_p[i][j] = choose_one(choices,k);
+                        if(solve(grid_p,l+1)){
                             return true;
                         }
+                        grid_p[i][j] = 0;
+                        copy(tmp,grid_p);
                     }
                 }
             }
@@ -65,20 +66,19 @@ bool solve(int grid_p[9][9],int l) {
 }
 
 void fill(int grid_p[9][9]){
-    int change;
+    bool change;
     do{
-        change=0;
+        change = false;
         for(int i=0;i<9;i++){
             for(int j=0;j<9;j++){
                 int choices[] = {0,0,0,0,0,0,0,0,0}; 
                 if(grid_p[i][j] == 0 && choices_num(grid_p,i,j,choices) == 1){
-                    
                     grid_p[i][j] = choose_one(choices,1);
-                    change++;
+                    change = true;
                 }
             }
         }
-    }while(change!=0);
+    }while(change);
 }
 
 
